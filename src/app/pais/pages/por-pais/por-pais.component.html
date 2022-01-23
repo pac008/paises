@@ -3,7 +3,7 @@
 
 
 <div class="row">
-    <div class="col">
+    <div class="col animate__animated animate__fadeIn animate__faster">
         <app-pais-input
             (onEnter)="buscar( $event )"
             (onDebounce)="sugerencias($event)"
@@ -11,6 +11,22 @@
         </app-pais-input>
     </div>
 </div>
+
+<ul class="list-group" *ngIf="mostrarSugerencias">
+    <li class="list-group-item list-group-item-action"
+        *ngFor="let pais of paisesSugeridos">
+        <a class="nav-link" [routerLink]="['/pais', pais.alpha2Code]">
+            {{ pais.name }}
+        </a>
+    </li>
+    <li class="list-group-item list-group-item-action"
+        >
+        <a class="nav-link"
+            (click)="buscarSugerencias( termino )">
+            Buscar "{{ termino }}"
+        </a>
+    </li>
+</ul>
 
 <hr>
 <div class="alert alert-danger"

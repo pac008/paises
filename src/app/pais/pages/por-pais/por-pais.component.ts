@@ -7,6 +7,11 @@ import { PaisService } from '../../services/pais.service';
   selector: 'app-por-pais',
   templateUrl: './por-pais.component.html',
   styles: [
+    `
+    li {
+      cursor: pointer;
+    }
+    `
   ]
 })
 export class PorPaisComponent{
@@ -14,6 +19,9 @@ export class PorPaisComponent{
   termino: string = ''
   hayError: boolean = false;
   paises: Country[] = [];
+  paisesSugeridos: Country[] = [];
+
+  mostrarSugerencias: boolean = false;
   constructor(private paisService: PaisService) { }
   
   // private apiUrl: string = 'https://restcountries.eu/rest/v2';
@@ -23,6 +31,7 @@ export class PorPaisComponent{
   buscar( termino: string) {
     this.hayError = false;
     this.termino = termino
+    
 
     this.paisService.buscarPais( termino )
     .subscribe( paises => {
@@ -35,6 +44,20 @@ export class PorPaisComponent{
 
   sugerencias( termino: string ) {
     this.hayError = false;
+    this.mostrarSugerencias = true
+    this.termino = termino
     // TODO: Crear sugerencias
+    this.paisService.buscarPais( termino )
+      .subscribe( paises => {
+        if ( paises.length) {
+          this.paisesSugeridos = paises.splice(0,5)
+        } 
+      })
+  }
+
+  buscarSugerencias( termino: string ) {
+    this.mostrarSugerencias = false;
+    this.buscar( termino )
+
   }
 }
